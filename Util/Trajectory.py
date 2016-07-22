@@ -257,6 +257,27 @@ class Trajectory:
             plt.close()
         return fig
 
+
+    def plot_over_trajectory(self, data):
+        """
+        Plots data over the trajectory on a 3d Graph
+
+        data is a list of arrays of the same length as the trajectory
+        :param data:
+        :return:
+        """
+        colors = 'rgbymc'
+
+        fig = plt.figure(figsize=(60, 20))
+        ax = fig.add_subplot(111, projection='3d')
+
+        for i, d in enumerate(data):
+            plt.plot(self.coords[:,0], self.coords[:,1], d, c=colors[i])
+
+        plt.show()
+        plt.close()
+
+
 if __name__ == '__main__':
     a = np.array([[0,0], [2,0], [2,2], [1,3], [0,2]])
     tr = Trajectory(a)
