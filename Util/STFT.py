@@ -24,6 +24,15 @@ import scipy
 import numpy as np
 
 def stft(x, fftsize=1024, overlap=4, ban=0):
+    """
+    Short Time Fourier Transform
+
+    :param x: Signal
+    :param fftsize: Window length
+    :param overlap: Overlaping between consecutive frequencies
+    :param ban: numer of Frequencies to null
+    :return:
+    """
     hop = int(fftsize / overlap)
     w = scipy.hanning(fftsize+1)[:-1]      # better reconstruction with this trick +1)[:-1]
     l = []

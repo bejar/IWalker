@@ -50,3 +50,6 @@ class User():
 
     def get_attr(self, attr):
         return self.data[attr]
+
+    def exist_attr(self, attr):
+        return attr in self.data

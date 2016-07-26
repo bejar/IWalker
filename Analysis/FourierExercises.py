@@ -26,7 +26,7 @@ import matplotlib.pyplot as pyplot
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from Config.Constants import datapath
-from Util.Query import get_exercises_path
+from Util.Query_old import get_exercises_path
 from numpy.fft import rfft, fftfreq
 from scipy.signal import argrelextrema,argrelmax,argrelmin
 from Util.Trajectory_old import straightness

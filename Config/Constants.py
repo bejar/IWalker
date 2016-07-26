@@ -43,7 +43,8 @@ import os
 
 __author__ = 'bejar'
 
+if __name__ == '__main__':
 
-for ds, pds in zip(datasets3o,datasets3):
-    print(odatapath+ds)
-    lfiles = sorted(os.listdir(odatapath+ds))
+    for ds, pds in zip(datasets3o,datasets3):
+        print(odatapath+ds)
+        lfiles = sorted(os.listdir(odatapath+ds))

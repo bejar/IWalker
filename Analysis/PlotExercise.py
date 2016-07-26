@@ -25,7 +25,7 @@ import matplotlib.pyplot as pyplot
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from Config.Constants import datapath
-from Util.Query import get_exercises_path
+from Util.Query_old import get_exercises_path
 import seaborn as sns
 import matplotlib.pyplot as plt
 from Util.Trajectory_old import geodesic, parametric_select, straightness, convex_hull

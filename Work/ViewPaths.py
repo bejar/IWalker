@@ -29,17 +29,20 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from pylab import *
 import numpy as np
-from Util.Trajectory import Trajectory
-from Util.User import User
+
 from Util.Smoothing import ALS_smoothing, numpy_smoothing
+from Util import User, Exercise, Exercises, Pacientes, Trajectory
 
 windows=['flat', 'hanning', 'hamming', 'bartlett', 'blackman']
 
 __author__ = 'bejar'
 
-if __name__ == '__main__':
 
-    ldur = []
+def do_it_from_files():
+    """
+
+    :return:
+    """
     for ds in datasets:
         lfiles = sorted(os.listdir(odatapath+ds))
         lfiles = [f.split('.')[0] for f in lfiles if f.split('.')[1] == 'usr']
@@ -56,5 +59,27 @@ if __name__ == '__main__':
             trajec.plot_over_trajectory([frame['lhfz']-frame['rhfz'], numpy_smoothing(frame['lhfz']-frame['rhfz'], window_len=5, window='blackman'),
                                          numpy_smoothing(frame['lhfz']-frame['rhfz'], window_len=5, window='hamming'),
                                          ALS_smoothing(frame['lhfz']-frame['rhfz'], 1, 0.5, niter=50)])
+
+
+
+if __name__ == '__main__':
+
+    #ldur = []
+
+    p = Pacientes()
+    e = Exercises()
+    p.from_db(pilot='FSL30')
+    e.from_db(pilot='FSL30')
+
+    for ex in e.iterator():
+
+        print (ex.uid, ex.id)
+
+        trajec = Trajectory(np.array(ex.frame.loc[:, ['epx','epy']]), exer=ex.uid + ' ' + str(ex.id))
+        trajec.plot_trajectory(show=True)
+
+        trajec.plot_over_trajectory([ex.frame['lhfz']-ex.frame['rhfz'], numpy_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], window_len=5, window='blackman'),
+                                     numpy_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], window_len=5, window='hamming'),
+                                     ALS_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], 1, 0.5, niter=50)])
 
 
