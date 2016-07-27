@@ -63,7 +63,7 @@ class Exercises:
 
         :return:
         """
-        for p in self.edict:
+        for p in sorted(self.edict):
             yield self.edict[p]
 
     def delete_patients(self, lpat):

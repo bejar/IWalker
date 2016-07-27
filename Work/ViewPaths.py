@@ -68,8 +68,8 @@ if __name__ == '__main__':
 
     p = Pacientes()
     e = Exercises()
-    p.from_db(pilot='NOG')
-    e.from_db(pilot='NOG')
+    p.from_db(pilot='FSL')
+    e.from_db(pilot='FSL')
 
     for ex in e.iterator():
 
@@ -83,5 +83,5 @@ if __name__ == '__main__':
         #                              ALS_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], 1, 0.5, niter=50)])
 
         ex.classify(criteria='speed')
-        trajec.plot_over_trajectory([(ex.frame['rs'] - ex.frame['ls'])*10, np.abs(ex.frame['lhfx']-ex.frame['rhfx'])])
+        trajec.plot_over_trajectory([ex.compute_speed(0.04), (ex.frame['rs'] + ex.frame['ls'])/2.0])
 

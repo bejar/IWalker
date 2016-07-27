@@ -255,12 +255,22 @@ if __name__ == '__main__':
 
     for ex in e.iterator():
 
-        print (ex.uid)
+        print (ex.uid+ '-' + str(ex.id))
 
         #plot_forces(ex.frame)
 
         #plot_smoothed_Z_forces(ex.frame)
 
-        plot_smoothed_forces_with_extrema(ex.frame)
+        #plot_smoothed_forces_with_extrema(ex.frame)
 
         #plot_correlation(ex.frame)
+
+
+        fig = plt.figure(figsize=(60, 20))
+        ax = fig.add_subplot(111)
+        plt.plot(range(len(ex.frame['lhfz'])), ex.compute_speed(0.1), c='r')
+        plt.plot(range(len(ex.frame['rhfz'])), ex.frame['rs'], c='b')
+        plt.plot(range(len(ex.frame['rhfz'])), ex.frame['ls'], c='g')
+        plt.title(ex.uid + '/' + str(ex.id))
+        plt.show()
+        plt.close()

@@ -91,5 +91,20 @@ class Exercise:
 
 
 
+    def compute_speed(self, mtime):
+        """
+        Compute the speed of the trajectory of the exercise using the (x,y) positions and the frequency
+
+        :param freq:
+        :return:
+        """
+
+        self.speeds = np.zeros(len(self.frame['epx']))
+        for i in range(len(self.frame['epx'])-1):
+            self.speeds[i] = np.sqrt(((self.frame.loc[i,'epx']-self.frame.loc[i+1,'epx'])**2)+
+                                     ((self.frame.loc[i,'epx']-self.frame.loc[i+1,'epx'])**2))/mtime
+        return self.speeds
+
+
 
 
