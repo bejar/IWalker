@@ -22,6 +22,7 @@ from pymongo import MongoClient
 from Config.Private import mongoserverlocal
 from io import StringIO
 from Util import User
+import numpy as np
 
 __author__ = 'bejar'
 
@@ -40,11 +41,17 @@ class Exercise:
         self.uid = ex['User ID']
         self.id = ex['Unix Time']
         self.frame = pd.read_csv(StringIO(ex['csv']), sep=',')
+        self.lamb = ex['i-Walker lambda_right']
+        if 'Exercise' in ex:
+            self.etype = ex['Exercise']
 
     def from_file(self, dfile):
         self.user = User(dfile)
         self.id = self.user.get_attr('Unix Time')
         self.uid = self.user.get_attr('User ID')
+        self.lamb = self.user.get_attr('i-Walker lambda_right')
+        if self.user.exist_attr('Exercise'):
+            self.etype = self.user.get_attr('Exercise')
 
         self.frame = pd.read_csv(dfile+'.csv', sep=',')
 
@@ -57,5 +64,32 @@ class Exercise:
         self.id = id
         self.frame = pd.read_csv(StringIO(c['csv']), sep=',')
         self.uid = c['User ID']
+        self.lamb = c['i-Walker lambda_right']
+        if 'Exercise' in c:
+            self.etype = c['Exercise']
+
+    def classify(self, criteria):
+        """
+        Classifies an exercise following a criteria
+
+        Speed - Uses the integral of the difference of right and left speed
+                If integral is close to zero it is a straight line
+                if (right-left) is positive then there is a left turn, else a right turn
+        :param criteria:
+        :return:
+        """
+
+        if criteria == 'speed':
+            diff = np.array(self.frame['rs'])-np.array(self.frame['ls'])
+            sdiff = np.sum(diff)
+            if sdiff < -500:
+                print('Der', sdiff)
+            elif sdiff > 500:
+                print('Izq', sdiff)
+            else:
+                print('Straight', sdiff)
+
+
+
 
 

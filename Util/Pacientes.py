@@ -89,6 +89,15 @@ class Pacientes():
         for p in self.ddict:
             yield self.ddict[p]
 
+    def del_patients(self, lpat):
+        """
+        Deletes patients with a specific id from the stucture
+        :param par: List of patients to delete
+        :return:
+        """
+        for p in lpat:
+            del self.ddict[p]
+
 if __name__ == '__main__':
     p = Pacientes()
 
@@ -96,3 +105,8 @@ if __name__ == '__main__':
 
     for v in p.iterator():
         print v
+    print(len(p.ddict))
+    p.del_patients(['FSL30'])
+
+
+    print(len(p.ddict))

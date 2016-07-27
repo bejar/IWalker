@@ -68,18 +68,20 @@ if __name__ == '__main__':
 
     p = Pacientes()
     e = Exercises()
-    p.from_db(pilot='FSL30')
-    e.from_db(pilot='FSL30')
+    p.from_db(pilot='NOG')
+    e.from_db(pilot='NOG')
 
     for ex in e.iterator():
 
         print (ex.uid, ex.id)
 
         trajec = Trajectory(np.array(ex.frame.loc[:, ['epx','epy']]), exer=ex.uid + ' ' + str(ex.id))
-        trajec.plot_trajectory(show=True)
+        # trajec.plot_trajectory(show=True)
 
-        trajec.plot_over_trajectory([ex.frame['lhfz']-ex.frame['rhfz'], numpy_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], window_len=5, window='blackman'),
-                                     numpy_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], window_len=5, window='hamming'),
-                                     ALS_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], 1, 0.5, niter=50)])
+        # trajec.plot_over_trajectory([ex.frame['lhfz']-ex.frame['rhfz'], numpy_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], window_len=5, window='blackman'),
+        #                              numpy_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], window_len=5, window='hamming'),
+        #                              ALS_smoothing(ex.frame['lhfz']-ex.frame['rhfz'], 1, 0.5, niter=50)])
 
+        ex.classify(criteria='speed')
+        trajec.plot_over_trajectory([(ex.frame['rs'] - ex.frame['ls'])*10, np.abs(ex.frame['lhfx']-ex.frame['rhfx'])])
 

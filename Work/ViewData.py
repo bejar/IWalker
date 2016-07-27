@@ -249,8 +249,9 @@ if __name__ == '__main__':
 
     p = Pacientes()
     e = Exercises()
-    p.from_db(pilot='FSL25')
-    e.from_db(pilot='FSL25')
+    p.from_db(pilot='NOGA')
+    e.from_db(pilot='NOGA')
+    # e.delete_patients(['FSL30'])
 
     for ex in e.iterator():
 
@@ -258,8 +259,8 @@ if __name__ == '__main__':
 
         #plot_forces(ex.frame)
 
-        plot_smoothed_Z_forces(ex.frame)
+        #plot_smoothed_Z_forces(ex.frame)
 
-        #plot_smoothed_forces_with_extrema(ex.frame)
+        plot_smoothed_forces_with_extrema(ex.frame)
 
         #plot_correlation(ex.frame)

@@ -273,7 +273,7 @@ class Trajectory:
 
         for i, d in enumerate(data):
             plt.plot(self.coords[:,0], self.coords[:,1], d, c=colors[i])
-
+        plt.title(self.exer_id)
         plt.show()
         plt.close()
 
