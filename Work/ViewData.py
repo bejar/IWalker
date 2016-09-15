@@ -31,7 +31,7 @@ from Util.STFT import stft
 import matplotlib.gridspec as gridspec
 from Util.Smoothing import ALS_smoothing, numpy_smoothing
 from scipy.signal import argrelextrema
-from Util import User, Exercise, Exercises, Pacientes
+from Util import User, Exercise, Exercises, Pacientes, Trajectory
 
 def total_norm(x, y, z):
     return np.sqrt(x*x+y*y+z*z)
@@ -119,7 +119,7 @@ def plot_forces(frame):
 
 def plot_smoothed_Z_forces(frame):
     """
-    Z forzes, smoothez Zforces, difference and extrema points
+    Z-forces, smoothed Z-forces, difference and extrema points
     :return:
     """
     fig = plt.figure(figsize=(60, 20))
@@ -149,12 +149,13 @@ def plot_smoothed_Z_forces(frame):
     plt.show()
     plt.close()
 
-def plot_smoothed_forces_with_extrema(frame):
+def plot_smoothed_forces_with_extrema(frame, traj=False):
     """
     L-R XYZ forces smoothed with extrema points
 
     :return:
     """
+
     fig = plt.figure(figsize=(60, 20))
     ax = fig.add_subplot(111, projection='3d')
     smthsigx = ALS_smoothing(frame['rhfx'] - frame['lhfx'], 1, 0.1)
@@ -164,6 +165,7 @@ def plot_smoothed_forces_with_extrema(frame):
     vext = np.array([np.nan] * len(frame['rhfx']))
     vext[smax] = smthsigx[smax]
     vext[smin] = smthsigx[smin]
+    vextX = vext.copy()
     plt.scatter(frame['epx'], frame['epy'], zs=vext, c='g', marker='o')
 
     smthsigx = ALS_smoothing(frame['rhfz'] - frame['lhfz'], 1, 0.1)
@@ -173,6 +175,7 @@ def plot_smoothed_forces_with_extrema(frame):
     vext = np.array([np.nan] * len(frame['rhfx']))
     vext[smax] = smthsigx[smax]
     vext[smin] = smthsigx[smin]
+    vextZ = vext.copy()
     plt.scatter(frame['epx'], frame['epy'], zs=vext, c='g', marker='o')
 
     smthsigx = ALS_smoothing(frame['rhfy'] - frame['lhfy'], 1, 0.1)
@@ -182,11 +185,50 @@ def plot_smoothed_forces_with_extrema(frame):
     vext = np.array([np.nan] * len(frame['rhfx']))
     vext[smax] = smthsigx[smax]
     vext[smin] = smthsigx[smin]
+    vextY = vext.copy()
     plt.scatter(frame['epx'], frame['epy'], zs=vext, c='g', marker='o')
     plt.title(ex.uid + '/' + str(ex.id))
 
+    if traj:
+        plt.show()
+    plt.close()
+
+    # Look for the beggining of the exercise
+
+    trajec = Trajectory(np.array(ex.frame.loc[:, ['epx', 'epy']]), exer=ex.uid + ' ' + str(ex.id))
+    beg, nd, vdis = trajec.find_begginning_end()
+    print(beg, nd)
+
+    fig = plt.figure(figsize=(60, 20))
+    ax = fig.add_subplot(111)
+    smthsigx = ALS_smoothing(frame['rhfz'] - frame['lhfz'], 1, 0.1)
+
+    # plt.plot(smthsigx[beg:], c='r')
+    # plt.plot(vextX[beg:], c='g', marker='o')
+    # plt.plot(vextY[beg:], c='r', marker='o')
+    # plt.plot(vextZ[beg:], c='b', marker='o')
+    plt.plot(vdis, smthsigx, c='r')
+    plt.plot(vdis, vextX, c='g', marker='o')
+    plt.plot(vdis, vextY, c='r', marker='o')
+    plt.plot(vdis, vextZ, c='b', marker='o')
+    plt.title(ex.uid + '/' + str(ex.id))
+
+    ax.annotate('', xy=(vdis[beg], 1),
+                xycoords='data',
+                xytext=(-15, 25), textcoords='offset points',
+                arrowprops=dict(facecolor='black', shrink=0.05),
+                horizontalalignment='center', verticalalignment='bottom',
+                )
+    ax.annotate('', xy=(vdis[nd], 1),
+                xycoords='data',
+                xytext=(-15, 25), textcoords='offset points',
+                arrowprops=dict(facecolor='red', shrink=0.05),
+                horizontalalignment='center', verticalalignment='bottom',
+                )
     plt.show()
     plt.close()
+
+
 
 def plot_correlation(frame):
     """
@@ -247,30 +289,31 @@ ban = int(0.25 / ((freq*1.0)/psfftl))-1
 
 if __name__ == '__main__':
 
+    # 'NOGA', 'FSL'
     p = Pacientes()
     e = Exercises()
     p.from_db(pilot='NOGA')
     e.from_db(pilot='NOGA')
-    # e.delete_patients(['FSL30'])
+    e.delete_patients(['FSL30'])
 
     for ex in e.iterator():
 
         print (ex.uid+ '-' + str(ex.id))
 
-        #plot_forces(ex.frame)
+        # plot_forces(ex.frame)
 
-        #plot_smoothed_Z_forces(ex.frame)
+        # plot_smoothed_Z_forces(ex.frame)
 
-        #plot_smoothed_forces_with_extrema(ex.frame)
+        plot_smoothed_forces_with_extrema(ex.frame)
 
         #plot_correlation(ex.frame)
 
 
-        fig = plt.figure(figsize=(60, 20))
-        ax = fig.add_subplot(111)
-        plt.plot(range(len(ex.frame['lhfz'])), ex.compute_speed(0.1), c='r')
-        plt.plot(range(len(ex.frame['rhfz'])), ex.frame['rs'], c='b')
-        plt.plot(range(len(ex.frame['rhfz'])), ex.frame['ls'], c='g')
-        plt.title(ex.uid + '/' + str(ex.id))
-        plt.show()
-        plt.close()
+        # fig = plt.figure(figsize=(60, 20))
+        # ax = fig.add_subplot(111)
+        # plt.plot(range(len(ex.frame['lhfz'])), ex.compute_speed(0.1), c='r')
+        # plt.plot(range(len(ex.frame['rhfz'])), ex.frame['rs'], c='b')
+        # plt.plot(range(len(ex.frame['rhfz'])), ex.frame['ls'], c='g')
+        # plt.title(ex.uid + '/' + str(ex.id))
+        # plt.show()
+        # plt.close()

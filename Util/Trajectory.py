@@ -278,6 +278,43 @@ class Trajectory:
         plt.close()
 
 
+    def find_begginning_end(self):
+        """
+        Looks for the beggining of the exercise assuming that it starts when the distance between consecutive steps
+        is larger than a threshold
+        Heuristically we assume that the mean of incremental steps in the central third of the signal is closer to the
+        stable step regime
+        :return:
+        """
+
+        chunk = int(self.coords.shape[0]/4.0)
+        vdis = np.zeros(self.coords.shape[0])
+        for i in range(1, self.coords.shape[0]):
+            dx = self.coords[i-1, 0] - self.coords[i, 0]
+            dy = self.coords[i-1, 1] - self.coords[i, 1]
+            vdis[i] = np.sqrt((dx*dx) + (dy*dy))
+
+        # Middle third of the distances
+        thresh = np.mean(vdis[chunk:3*chunk])
+
+        bg = 0
+        for i in range(vdis.shape[0]):
+            if vdis[i] > thresh:
+                bg = i-1
+                break
+
+        nd = 0
+        for i in range(vdis.shape[0]):
+            if vdis[vdis.shape[0] - i -1] > thresh:
+                nd = vdis.shape[0] - i -1
+                break
+
+        return bg, nd, self.distances
+
+
+
+
+
 if __name__ == '__main__':
     a = np.array([[0,0], [2,0], [2,2], [1,3], [0,2]])
     tr = Trajectory(a)
