@@ -149,7 +149,7 @@ def plot_smoothed_Z_forces(frame):
     plt.show()
     plt.close()
 
-def plot_smoothed_forces_with_extrema(frame, traj=False):
+def plot_smoothed_forces_with_extrema(frame, traj=True):
     """
     L-R XYZ forces smoothed with extrema points
 

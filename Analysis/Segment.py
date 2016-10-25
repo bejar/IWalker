@@ -129,49 +129,93 @@ def segmentation(frame, traj=False):
     beg, nd, vdis = trajec.find_begginning_end()
     print(beg, nd)
 
-    fig = plt.figure(figsize=(60, 20))
-    ax = fig.add_subplot(111)
-    plt.plot(vdis, smthsigz, c='r')
-    plt.plot(vdis, vextX, c='g', marker='o')
-    plt.plot(vdis, vextY, c='r', marker='o')
-    plt.plot(vdis, vextZ, c='b', marker='o')
-    plt.title(ex.uid + '/' + str(ex.id))
+    ltuples = segment_signal(frame['rhfz'] - frame['lhfz'], beg, nd)
 
-    ax.annotate('', xy=(vdis[beg], 1),
-                xycoords='data',
-                xytext=(-15, 25), textcoords='offset points',
-                arrowprops=dict(facecolor='green', shrink=0.05),
-                horizontalalignment='center', verticalalignment='bottom',
-                )
-    ax.annotate('', xy=(vdis[nd], vextZ[nd]),
-                xycoords='data',
-                xytext=(-15, 25), textcoords='offset points',
-                arrowprops=dict(facecolor='yellow', shrink=0.05),
-                horizontalalignment='center', verticalalignment='bottom',
-                )
+    plotseg = True
+    if plotseg :
+        fig = plt.figure(figsize=(60, 20))
+        ax = fig.add_subplot(111)
+        plt.plot(vdis, smthsigz, c='r')
+        plt.plot(vdis, vextX, c='g', marker='o')
+        plt.plot(vdis, vextY, c='r', marker='o')
+        plt.plot(vdis, vextZ, c='b', marker='o')
+        plt.title(ex.uid + '/' + str(ex.id))
 
-    ltuples = segment_signal(frame['rhfz']- frame['lhfz'], beg,nd)
+        ax.annotate('', xy=(vdis[beg], 1),
+                    xycoords='data',
+                    xytext=(-15, 25), textcoords='offset points',
+                    arrowprops=dict(facecolor='green', shrink=0.05),
+                    horizontalalignment='center', verticalalignment='bottom',
+                    )
+        ax.annotate('', xy=(vdis[nd], vextZ[nd]),
+                    xycoords='data',
+                    xytext=(-15, 25), textcoords='offset points',
+                    arrowprops=dict(facecolor='yellow', shrink=0.05),
+                    horizontalalignment='center', verticalalignment='bottom',
+                    )
 
+
+        if ltuples is not None:
+            for i,j in ltuples:
+
+                ax.annotate(str(i), xy=(vdis[i], vextZ[i]),
+                            xycoords='data',
+                            xytext=(-15, 25), textcoords='offset points',
+                            arrowprops=dict(facecolor='black', shrink=0.03),
+                            horizontalalignment='center', verticalalignment='bottom',
+                            )
+                ax.annotate(str(j), xy=(vdis[j], vextZ[j]),
+                            xycoords='data',
+                            xytext=(-15, 25), textcoords='offset points',
+                            arrowprops=dict(facecolor='red', shrink=0.03),
+                            horizontalalignment='center', verticalalignment='bottom',
+                            )
+            plt.show()
+        else:
+            plt.show()
+        
+        plt.close()
     if ltuples is not None:
+
+        fig = plt.figure(figsize=(60, 20))
+        ax = fig.add_subplot(111)
+        plt.plot(vdis, frame['rhfz'], c='r')
+        plt.plot(vdis, frame['lhfz'], c='b')
+        plt.plot(vdis, frame['lhfx'], c='g')
+        plt.plot(vdis, frame['rhfx'], c='y')
+
+        ax.annotate('', xy=(vdis[beg], 1),
+                    xycoords='data',
+                    xytext=(-15, 25), textcoords='offset points',
+                    arrowprops=dict(facecolor='green', shrink=0.05),
+                    horizontalalignment='center', verticalalignment='bottom',
+                    )
+        ax.annotate('', xy=(vdis[nd], vextZ[nd]),
+                    xycoords='data',
+                    xytext=(-15, 25), textcoords='offset points',
+                    arrowprops=dict(facecolor='yellow', shrink=0.05),
+                    horizontalalignment='center', verticalalignment='bottom',
+                    )
+
+
         for i,j in ltuples:
 
-            ax.annotate(str(i), xy=(vdis[i], vextZ[i]),
+            ax.annotate(str(i), xy=(vdis[i], frame['rhfz'][i]),
                         xycoords='data',
                         xytext=(-15, 25), textcoords='offset points',
                         arrowprops=dict(facecolor='black', shrink=0.03),
                         horizontalalignment='center', verticalalignment='bottom',
                         )
-            ax.annotate(str(j), xy=(vdis[j], vextZ[j]),
+            ax.annotate(str(j), xy=(vdis[j], frame['rhfz'][j]),
                         xycoords='data',
                         xytext=(-15, 25), textcoords='offset points',
                         arrowprops=dict(facecolor='red', shrink=0.03),
                         horizontalalignment='center', verticalalignment='bottom',
                         )
-
-    else:
         plt.show()
-        
-    plt.close()
+        plt.close()
+
+
 
 vars = ['lhfx','lhfy','lhfz','rhfx','rhfy','rhfz','lnf','rnf','acc','magn',
         'gyro','hbl','hbr','epx','epy','epo','ls','rs']
