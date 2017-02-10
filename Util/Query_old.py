@@ -22,7 +22,7 @@ __author__ = 'bejar'
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-from Config.Private import mongopass, mongouser, mongoserver
+from Config.Connection import mongopass, mongouser, mongoserver
 
 def convert_path(pfile):
     """

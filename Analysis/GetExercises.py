@@ -24,7 +24,7 @@ import os
 import paramiko
 from pymongo import MongoClient
 
-from Config.Private import username, password, machine, mongopass, mongouser, mongoserver
+from Config.Connection import username, password, machine, mongopass, mongouser, mongoserver
 
 localdir = '/home/bejar/Data/IWalker/'
 exts = ['.wlk', '_eq.wlk']

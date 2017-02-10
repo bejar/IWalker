@@ -23,7 +23,7 @@ __author__ = 'bejar'
 import os
 from pymongo import MongoClient
 from Config.Constants import odatapath, datasets, datasets2
-from Config.Private import mongoserverlocal
+from Config.Connection import mongoserverlocal
 from Util import User, Pacientes
 import pandas as pd
 

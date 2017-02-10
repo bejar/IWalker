@@ -18,7 +18,7 @@ ropen
 """
 __author__ = 'bejar'
 
-from Config.Private import username, password, machine
+from Config.Connection import username, password, machine
 import paramiko
 import os
 

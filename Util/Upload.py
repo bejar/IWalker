@@ -21,7 +21,7 @@ Upload
 import os
 from pymongo import MongoClient
 from Config.Constants import odatapath, datasets
-from Config.Private import mongoserverlocal
+from Config.Connection import mongoserverlocal
 from io import StringIO
 
 import pandas as pd

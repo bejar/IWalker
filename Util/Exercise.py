@@ -19,7 +19,7 @@ Exercise
 
 import pandas as pd
 from pymongo import MongoClient
-from Config.Private import mongoserverlocal
+from Config.Connection import mongoserverlocal
 from io import StringIO
 from Util import User
 import numpy as np

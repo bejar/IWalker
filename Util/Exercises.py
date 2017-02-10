@@ -19,7 +19,7 @@ Exercises
 
 
 from pymongo import MongoClient
-from Config.Private import mongoserverlocal
+from Config.Connection import mongoserverlocal
 from Util import Exercise
 
 __author__ = 'bejar'

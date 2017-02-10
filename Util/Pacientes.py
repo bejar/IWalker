@@ -22,7 +22,7 @@ __author__ = 'bejar'
 
 import pandas as pd
 from pymongo import MongoClient
-from Config.Private import mongoserverlocal
+from Config.Connection import mongoserverlocal
 
 
 class Pacientes():
