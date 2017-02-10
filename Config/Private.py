@@ -19,12 +19,3 @@ Private
 
 __author__ = 'bejar'
 
-machine = 'iwalkervpn.lsi.upc.edu'
-username = 'bejar'
-password = '19LoSDi27'
-
-mongoserver = 'mongodb-rdlab.lsi.upc.edu'
-mongouser = 'iwalkersws'
-mongopass = 'XFW3fofOTn'
-
-mongoserverlocal = 'polaris.lsi.upc.edu'
