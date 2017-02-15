@@ -21,12 +21,12 @@ __author__ = 'bejar'
 
 
 from pymongo import MongoClient
-
+from Config.Connection import mongopass, mongouser
 client = MongoClient('mongodb-rdlab.lsi.upc.edu')
 
 db = client.iwalkersws
 
-db.authenticate('iwalkersws', password='XFW3fofOTn')
+db.authenticate(mongouser, password=mongopass)
 
 col = db['idf_exercise']
 
